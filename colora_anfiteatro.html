@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colora l'Anfiteatro Romano - Trebula Mutuesca</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: #ffd700;
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .info-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .info-panel p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 968px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tools-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .tools-panel h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tool-section {
+            margin-bottom: 25px;
+        }
+
+        .tool-label {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .tool-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tool-btn {
+            padding: 12px;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-size: 1.5em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tool-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .tool-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .color-btn {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 3px solid #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .color-btn.active {
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            transform: scale(1.15);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .secondary-btn {
+            background: white;
+            border: 3px solid #667eea;
+            color: #667eea;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .canvas-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #coloringCanvas {
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            cursor: crosshair;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 50px;
+            border: 3px solid #333;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Colora l'Anfiteatro Romano</h1>
+        <p class="subtitle">Porta colore all'antica arena di Trebula Mutuesca!</p>
+
+        <div class="info-panel">
+            <p>🖌️ Usa il <strong>pennello</strong> per colorare le linee o il <strong>secchiello</strong> per riempire le aree! Scegli i colori dalla tavolozza e crea il tuo capolavoro romano! 🏛️</p>
+        </div>
+
+        <div class="game-container">
+            <div class="tools-panel">
+                <h3>🛠️ Strumenti</h3>
+
+                <div class="tool-section">
+                    <span class="tool-label">Modalità:</span>
+                    <div class="tool-buttons">
+                        <button class="tool-btn active" id="brushBtn" onclick="selectTool('brush')">
+                            🖌️
+                        </button>
+                        <button class="tool-btn" id="bucketBtn" onclick="selectTool('bucket')">
+                            🪣
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <span class="tool-label">Colore Selezionato:</span>
+                    <div class="color-preview" id="colorPreview" style="background: #8B4513;"></div>
+                </div>
+
+                <div class="tool-section">
+                    <span class="tool-label">Tavolozza Colori:</span>
+                    <div class="color-palette" id="colorPalette"></div>
+                </div>
+
+                <div class="tool-section">
+                    <span class="tool-label">Azioni:</span>
+                    <div class="action-buttons">
+                        <button class="action-btn secondary-btn" onclick="clearCanvas()">🗑️ Cancella Tutto</button>
+                        <button class="action-btn primary-btn" onclick="saveDrawing()">💾 Salva Disegno</button>
+                        <button class="action-btn secondary-btn" onclick="printDrawing()">🖨️ Stampa</button>
+                        <button class="action-btn secondary-btn" onclick="window.location.href='index.html'">🏠 Menu</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="coloringCanvas" width="800" height="600"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('coloringCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Colori romani autentici
+        const colors = [
+            '#8B4513', // Marrone terra
+            '#D2691E', // Terracotta
+            '#F4A460', // Sabbia
+            '#CD853F', // Oro antico
+            '#DAA520', // Oro
+            '#FFD700', // Oro brillante
+            '#E6E6FA', // Lavanda (toga)
+            '#4169E1', // Blu romano
+            '#DC143C', // Rosso porpora
+            '#8B0000', // Rosso scuro
+            '#228B22', // Verde oliva
+            '#006400', // Verde scuro
+            '#FFFFFF', // Bianco marmo
+            '#F5F5DC', // Beige
+            '#808080', // Grigio pietra
+            '#000000'  // Nero
+        ];
+
+        let currentColor = colors[0];
+        let currentTool = 'brush';
+        let isDrawing = false;
+        let imageData = null;
+
+        // Crea tavolozza colori
+        const palette = document.getElementById('colorPalette');
+        colors.forEach((color, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'color-btn' + (index === 0 ? ' active' : '');
+            btn.style.background = color;
+            btn.onclick = () => selectColor(color, btn);
+            palette.appendChild(btn);
+        });
+
+        function selectColor(color, btn) {
+            currentColor = color;
+            document.getElementById('colorPreview').style.background = color;
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            btn.classList.add('pulse');
+            setTimeout(() => btn.classList.remove('pulse'), 500);
+        }
+
+        function selectTool(tool) {
+            currentTool = tool;
+            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tool === 'brush' ? 'brushBtn' : 'bucketBtn').classList.add('active');
+            
+            canvas.style.cursor = tool === 'brush' ? 'crosshair' : 'pointer';
+        }
+
+        // Disegna l'anfiteatro
+        function drawAmphitheater() {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 3;
+
+            // Ellisse esterna
+            ctx.beginPath();
+            ctx.ellipse(400, 300, 350, 250, 0, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Ellisse media
+            ctx.beginPath();
+            ctx.ellipse(400, 300, 280, 200, 0, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Arena centrale
+            ctx.beginPath();
+            ctx.ellipse(400, 300, 200, 140, 0, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Archi esterni (48 archi)
+            for (let i = 0; i < 48; i++) {
+                const angle = (i / 48) * Math.PI * 2;
+                const x1 = 400 + Math.cos(angle) * 350;
+                const y1 = 300 + Math.sin(angle) * 250;
+                const x2 = 400 + Math.cos(angle) * 280;
+                const y2 = 300 + Math.sin(angle) * 200;
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+
+                // Archi decorativi
+                if (i % 2 === 0) {
+                    const midX = (x1 + x2) / 2;
+                    const midY = (y1 + y2) / 2;
+                    ctx.beginPath();
+                    ctx.arc(midX, midY, 15, 0, Math.PI, true);
+                    ctx.stroke();
+                }
+            }
+
+            // Gradinate interne
+            for (let i = 0; i < 8; i++) {
+                const radius = 140 + (i * 8);
+                ctx.beginPath();
+                ctx.ellipse(400, 300, radius, radius * 0.7, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Ingressi principali (4 vie)
+            const entrances = [0, Math.PI/2, Math.PI, Math.PI * 1.5];
+            entrances.forEach(angle => {
+                const x1 = 400 + Math.cos(angle) * 200;
+                const y1 = 300 + Math.sin(angle) * 140;
+                const x2 = 400 + Math.cos(angle) * 280;
+                const y2 = 300 + Math.sin(angle) * 200;
+                
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.lineWidth = 3;
+            });
+
+            // Dettagli architettonici
+            // Colonne decorative
+            for (let i = 0; i < 24; i++) {
+                const angle = (i / 24) * Math.PI * 2;
+                const x = 400 + Math.cos(angle) * 315;
+                const y = 300 + Math.sin(angle) * 225;
+                
+                ctx.fillStyle = '#333';
+                ctx.fillRect(x - 3, y - 10, 6, 20);
+            }
+
+            // Salva lo stato iniziale
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        }
+
+        // Event listeners per disegnare
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch support
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            handleClick(x, y);
+        });
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            handleClick(x, y);
+        }
+
+        function draw(e) {
+            if (!isDrawing || currentTool !== 'brush') return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.fillStyle = currentColor;
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function handleClick(x, y) {
+            if (currentTool === 'bucket') {
+                floodFill(Math.floor(x), Math.floor(y));
+            }
+        }
+
+        function floodFill(startX, startY) {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const targetColor = getPixelColor(imageData, startX, startY);
+            const fillColor = hexToRgb(currentColor);
+            
+            if (colorsMatch(targetColor, fillColor)) return;
+            
+            const stack = [[startX, startY]];
+            const visited = new Set();
+            
+            while (stack.length > 0) {
+                const [x, y] = stack.pop();
+                const key = `${x},${y}`;
+                
+                if (visited.has(key)) continue;
+                if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) continue;
+                
+                const currentColor = getPixelColor(imageData, x, y);
+                if (!colorsMatch(currentColor, targetColor)) continue;
+                
+                setPixelColor(imageData, x, y, fillColor);
+                visited.add(key);
+                
+                stack.push([x + 1, y]);
+                stack.push([x - 1, y]);
+                stack.push([x, y + 1]);
+                stack.push([x, y - 1]);
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function getPixelColor(imageData, x, y) {
+            const index = (y * imageData.width + x) * 4;
+            return {
+                r: imageData.data[index],
+                g: imageData.data[index + 1],
+                b: imageData.data[index + 2],
+                a: imageData.data[index + 3]
+            };
+        }
+
+        function setPixelColor(imageData, x, y, color) {
+            const index = (y * imageData.width + x) * 4;
+            imageData.data[index] = color.r;
+            imageData.data[index + 1] = color.g;
+            imageData.data[index + 2] = color.b;
+            imageData.data[index + 3] = 255;
+        }
+
+        function colorsMatch(c1, c2, tolerance = 10) {
+            return Math.abs(c1.r - c2.r) <= tolerance &&
+                   Math.abs(c1.g - c2.g) <= tolerance &&
+                   Math.abs(c1.b - c2.b) <= tolerance;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : {r: 0, g: 0, b: 0};
+        }
+
+        function clearCanvas() {
+            if (confirm('🗑️ Vuoi davvero cancellare tutto il disegno?')) {
+                drawAmphitheater();
+            }
+        }
+
+        function saveDrawing() {
+            const link = document.createElement('a');
+            link.download = 'anfiteatro_romano_colorato.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            
+            alert('💾 Disegno salvato! Controlla i tuoi download! 🎨');
+        }
+
+        function printDrawing() {
+            const dataUrl = canvas.toDataURL();
+            const windowContent = '<!DOCTYPE html>';
+            const printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write(windowContent);
+            printWindow.document.write('<html><head><title>Anfiteatro Romano</title></head><body>');
+            printWindow.document.write('<img src="' + dataUrl + '" style="width:100%;">');
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 250);
+        }
+
+        // Inizializza
+        drawAmphitheater();
+    </script>
+</body>
+</html>

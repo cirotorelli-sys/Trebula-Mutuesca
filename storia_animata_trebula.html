@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storia di Trebula Mutuesca - Racconto Animato</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            color: #ffd700;
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .book-container {
+            background: linear-gradient(135deg, #f9f3e6 0%, #e8dcc4 100%);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 5px solid #8B4513;
+            position: relative;
+            min-height: 600px;
+        }
+        
+        .scene-header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s;
+        }
+        
+        .scene-title {
+            color: #8B4513;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .scene-subtitle {
+            color: #A0522D;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+        
+        .scene-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .scene-content { grid-template-columns: 1fr; }
+        }
+        
+        .scene-stage {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            min-height: 350px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #8B4513;
+        }
+        
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15em;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .hotspot {
+            position: absolute;
+            font-size: 2.5em;
+            cursor: pointer;
+            transition: transform 0.3s;
+            z-index: 10;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .hotspot:hover {
+            transform: scale(1.3);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .hotspot-info {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 0.4em;
+            white-space: nowrap;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        
+        .hotspot:hover .hotspot-info {
+            display: block;
+            animation: popIn 0.3s;
+        }
+        
+        @keyframes popIn {
+            0% { transform: translateX(-50%) scale(0); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+        
+        .scene-text {
+            position: relative;
+            z-index: 5;
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+        
+        .character-panel {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+            border-radius: 15px;
+            padding: 20px;
+            border: 3px solid #667eea;
+        }
+        
+        .character-avatar {
+            text-align: center;
+            font-size: 5em;
+            margin-bottom: 15px;
+        }
+        
+        .character-name {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .dialogue-bubble {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            padding: 15px;
+            position: relative;
+            font-size: 1em;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .dialogue-bubble::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 15px solid #667eea;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .nav-btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .nav-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s;
+        }
+        
+        .page-number {
+            text-align: center;
+            color: #8B4513;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated-element {
+            animation: fadeIn 1s;
+        }
+        
+        /* Animazioni specifiche per scene */
+        .building-animation {
+            animation: buildUp 2s;
+        }
+        
+        @keyframes buildUp {
+            0% { transform: scaleY(0); transform-origin: bottom; }
+            100% { transform: scaleY(1); }
+        }
+        
+        .fade-animation {
+            animation: fadeInOut 3s infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📖 Storia di Trebula Mutuesca</h1>
+        <p class="subtitle">Un Viaggio nel Tempo</p>
+        
+        <div class="book-container">
+            <div class="scene-header" id="sceneHeader">
+                <div class="scene-title" id="sceneTitle"></div>
+                <div class="scene-subtitle" id="sceneSubtitle"></div>
+            </div>
+            
+            <div class="scene-content">
+                <div class="scene-stage" id="sceneStage">
+                    <div class="background" id="background"></div>
+                    <div class="scene-text animated-element" id="sceneText"></div>
+                    <div id="hotspots"></div>
+                </div>
+                
+                <div class="character-panel">
+                    <div class="character-avatar" id="characterAvatar"></div>
+                    <div class="character-name" id="characterName"></div>
+                    <div class="dialogue-bubble animated-element" id="dialogue"></div>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button class="nav-btn" id="prevBtn" onclick="previousScene()">⬅️ Indietro</button>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <button class="nav-btn" id="nextBtn" onclick="nextScene()">Avanti ➡️</button>
+            </div>
+            
+            <div class="page-number" id="pageNumber"></div>
+        </div>
+    </div>
+
+    <script>
+        const scenes = [
+            {
+                title: "L'Antica Fondazione",
+                subtitle: "Come nacque Trebula Mutuesca",
+                bg: "🏔️",
+                text: "Tanto tempo fa, nel cuore della terra dei Sabini, c'era una bella collina verde. I Romani arrivarono qui nel 290 a.C. e fondarono una nuova città: Trebula Mutuesca!",
+                character: {avatar: "👦", name: "Marco il Romano"},
+                dialogue: "Ciao! Sono Marco, un giovane romano. Ti farò scoprire la mia meravigliosa città!",
+                hotspots: [
+                    {x: 20, y: 40, emoji: "🏔️", info: "Le colline sabine erano perfette!"},
+                    {x: 50, y: 50, emoji: "⚔️", info: "I Romani arrivarono nel 290 a.C."},
+                    {x: 75, y: 30, emoji: "🏛️", info: "Il primo tempio costruito"}
+                ]
+            },
+            {
+                title: "La Vita Quotidiana",
+                subtitle: "Un giorno nel Foro Romano",
+                bg: "🏛️",
+                text: "Ogni mattina, il Foro si riempiva di vita! Mercanti vendevano frutta e olive, i senatori discutevano di leggi importanti, e i bambini giocavano vicino alle fontane.",
+                character: {avatar: "👴", name: "Lucio il Senatore"},
+                dialogue: "Io sono Lucio, un anziano senatore. Il Foro è il cuore pulsante della nostra città!",
+                hotspots: [
+                    {x: 25, y: 60, emoji: "🏪", info: "Mercanti vendevano di tutto!"},
+                    {x: 50, y: 40, emoji: "👥", info: "Senatori in toga discutevano"},
+                    {x: 75, y: 55, emoji: "⛲", info: "Fontana con acqua dall'acquedotto"}
+                ]
+            },
+            {
+                title: "Il Grande Anfiteatro",
+                subtitle: "Giochi e spettacoli per tutti",
+                bg: "🏟️",
+                text: "L'anfiteatro era il luogo più emozionante! Qui si svolgevano combattimenti di gladiatori, cacce agli animali e grandi spettacoli. Migliaia di persone venivano a vedere!",
+                character: {avatar: "⚔️", name: "Marcus il Gladiatore"},
+                dialogue: "Sono Marcus il gladiatore! Combatto per l'onore e la gloria di Roma!",
+                hotspots: [
+                    {x: 50, y: 50, emoji: "🏟️", info: "Ospitava 5000 persone!"},
+                    {x: 30, y: 40, emoji: "⚔️", info: "Gladiatori allenavano qui"},
+                    {x: 70, y: 45, emoji: "👑", info: "Posto d'onore dell'imperatore"}
+                ]
+            },
+            {
+                title: "Le Terme Romane",
+                subtitle: "Relax e socialità",
+                bg: "🛁",
+                text: "Le terme erano molto più di semplici bagni! Qui i romani si rilassavano in piscine calde e fredde, facevano ginnastica, leggevano libri e chiacchieravano con gli amici.",
+                character: {avatar: "👩", name: "Claudia"},
+                dialogue: "Sono Claudia. Alle terme incontro le mie amiche ogni pomeriggio!",
+                hotspots: [
+                    {x: 35, y: 50, emoji: "🛁", info: "Vasche a diverse temperature"},
+                    {x: 65, y: 45, emoji: "💪", info: "Palestra per esercizio"},
+                    {x: 50, y: 35, emoji: "📚", info: "Biblioteca per leggere"}
+                ]
+            },
+            {
+                title: "Il Mercato del Foro",
+                subtitle: "Commercio e scambi",
+                bg: "🏪",
+                text: "Al mercato si poteva comprare di tutto: frutta fresca, pesce, stoffe preziose, gioielli, vasi di ceramica e persino schiavi. Era un luogo colorato e rumoroso!",
+                character: {avatar: "👦", name: "Marco"},
+                dialogue: "Mia madre mi manda sempre a comprare olive e pane fresco!",
+                hotspots: [
+                    {x: 30, y: 55, emoji: "🍇", info: "Frutta e verdura fresca"},
+                    {x: 55, y: 50, emoji: "🏺", info: "Vasi e anfore di ceramica"},
+                    {x: 75, y: 45, emoji: "💰", info: "Monete romane usate"}
+                ]
+            },
+            {
+                title: "L'Acquedotto Magnifico",
+                subtitle: "Ingegneria romana",
+                bg: "🌉",
+                text: "I Romani erano ingegneri fantastici! Costruirono un acquedotto che portava acqua fresca da lontano fino alla città. Era un'opera incredibile!",
+                character: {avatar: "👴", name: "Lucio"},
+                dialogue: "L'acquedotto è una delle nostre più grandi conquiste tecnologiche!",
+                hotspots: [
+                    {x: 40, y: 40, emoji: "🌉", info: "Archi alti sostenevano il canale"},
+                    {x: 70, y: 35, emoji: "💧", info: "L'acqua scorreva per gravità"},
+                    {x: 55, y: 60, emoji: "⛲", info: "Arrivava alle fontane"}
+                ]
+            },
+            {
+                title: "Il Declino",
+                subtitle: "La fine dell'Impero",
+                bg: "🏚️",
+                text: "Dopo secoli di gloria, l'Impero Romano cadde. Trebula Mutuesca fu abbandonata e lentamente la natura riprese il sopravvento. Gli edifici crollarono e furono dimenticati per molto tempo.",
+                character: {avatar: "📜", name: "Il Narratore"},
+                dialogue: "Passarono molti secoli... Gli edifici diventarono rovine coperte da erba e alberi.",
+                hotspots: [
+                    {x: 35, y: 50, emoji: "🏚️", info: "Gli edifici crollarono lentamente"},
+                    {x: 65, y: 45, emoji: "🌳", info: "La natura riprese il sopravvento"},
+                    {x: 50, y: 60, emoji: "📜", info: "La città fu dimenticata"}
+                ]
+            },
+            {
+                title: "La Riscoperta",
+                subtitle: "Archeologia moderna",
+                bg: "🔍",
+                text: "Nel 1900, gli archeologi iniziarono a scavare! Trovarono mosaici bellissimi, statue, monete e i resti degli antichi edifici. Oggi possiamo visitare Trebula Mutuesca e scoprire il suo passato glorioso!",
+                character: {avatar: "👩‍🔬", name: "Dott.ssa Elena"},
+                dialogue: "Sono un'archeologa moderna! Ogni scavo ci rivela nuovi segreti di Trebula!",
+                hotspots: [
+                    {x: 30, y: 55, emoji: "🔍", info: "Archeologi scavano con cura"},
+                    {x: 60, y: 50, emoji: "🏺", info: "Reperti preziosi ritrovati"},
+                    {x: 80, y: 40, emoji: "🏛️", info: "Il sito archeologico oggi"}
+                ]
+            },
+            {
+                title: "La Fine del Viaggio",
+                subtitle: "Grazie per aver viaggiato con noi!",
+                bg: "🎉",
+                text: "Hai completato il viaggio nella storia di Trebula Mutuesca! Ora conosci come vivevano i Romani, cosa costruivano e come gli archeologi hanno riportato alla luce questa meravigliosa città. Continua a esplorare e imparare!",
+                character: {avatar: "📖", name: "La Storia"},
+                dialogue: "Grazie per aver letto la nostra storia! Ora vai a esplorare gli altri giochi e scopri ancora di più su Trebula Mutuesca! 🏛️✨",
+                hotspots: [
+                    {x: 30, y: 50, emoji: "🎮", info: "Gioca agli altri giochi!"},
+                    {x: 50, y: 45, emoji: "🏛️", info: "Visita il sito archeologico!"},
+                    {x: 70, y: 50, emoji: "📚", info: "Continua a imparare!"}
+                ]
+            }
+        ];
+
+        let currentScene = 0;
+
+        function loadScene(index) {
+            const scene = scenes[index];
+            
+            document.getElementById('sceneTitle').textContent = scene.title;
+            document.getElementById('sceneSubtitle').textContent = scene.subtitle;
+            document.getElementById('background').textContent = scene.bg;
+            document.getElementById('sceneText').textContent = scene.text;
+            document.getElementById('characterAvatar').textContent = scene.character.avatar;
+            document.getElementById('characterName').textContent = scene.character.name;
+            document.getElementById('dialogue').textContent = scene.character.dialogue;
+            
+            // Hotspots
+            const hotspotsContainer = document.getElementById('hotspots');
+            hotspotsContainer.innerHTML = '';
+            scene.hotspots.forEach(spot => {
+                const hotspot = document.createElement('div');
+                hotspot.className = 'hotspot';
+                hotspot.style.left = spot.x + '%';
+                hotspot.style.top = spot.y + '%';
+                hotspot.innerHTML = `
+                    ${spot.emoji}
+                    <div class="hotspot-info">${spot.info}</div>
+                `;
+                hotspotsContainer.appendChild(hotspot);
+            });
+            
+            // Progress
+            const progress = ((index + 1) / scenes.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('pageNumber').textContent = `Pagina ${index + 1} di ${scenes.length}`;
+            
+            // Buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (index === scenes.length - 1) {
+                nextBtn.textContent = '🏠 Fine - Torna al Menu';
+                nextBtn.disabled = false;
+                nextBtn.onclick = () => {
+                    if (confirm('Storia completata! 🎉\n\nVuoi tornare al menu principale per giocare ad altri giochi?')) {
+                        window.location.href = 'index.html';
+                    }
+                };
+            } else {
+                nextBtn.textContent = 'Avanti ➡️';
+                nextBtn.disabled = false;
+                nextBtn.onclick = nextScene;
+            }
+            
+            // Animazione
+            document.querySelectorAll('.animated-element').forEach(el => {
+                el.style.animation = 'none';
+                setTimeout(() => el.style.animation = '', 10);
+            });
+        }
+
+        function nextScene() {
+            if (currentScene < scenes.length - 1) {
+                currentScene++;
+                loadScene(currentScene);
+            }
+        }
+
+        function previousScene() {
+            if (currentScene > 0) {
+                currentScene--;
+                loadScene(currentScene);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextScene();
+            if (e.key === 'ArrowLeft') previousScene();
+        });
+
+        // Load first scene
+        loadScene(0);
+    </script>
+</body>
+</html>

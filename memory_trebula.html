@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game - Trebula Mutuesca</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: #ffd700;
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe4b3 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border: 3px solid #ffd700;
+            text-align: center;
+        }
+
+        .info-panel p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .controls {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .difficulty-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .difficulty-btn {
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .difficulty-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .difficulty-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .info-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .info-label {
+            color: #667eea;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .game-board {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .cards-container {
+            display: grid;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .cards-container.easy {
+            grid-template-columns: repeat(4, 100px);
+        }
+
+        .cards-container.medium {
+            grid-template-columns: repeat(4, 90px);
+        }
+
+        .cards-container.hard {
+            grid-template-columns: repeat(4, 80px);
+        }
+
+        @media (max-width: 600px) {
+            .cards-container.easy {
+                grid-template-columns: repeat(4, 70px);
+            }
+            .cards-container.medium {
+                grid-template-columns: repeat(4, 65px);
+            }
+            .cards-container.hard {
+                grid-template-columns: repeat(4, 60px);
+            }
+        }
+
+        .card {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px) rotateY(0deg);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.matched {
+            animation: matchPulse 0.6s;
+            pointer-events: none;
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1) rotateY(180deg); }
+            50% { transform: scale(1.1) rotateY(180deg); }
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+            border: 3px solid #667eea;
+        }
+
+        .victory-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .victory-overlay.show {
+            display: flex;
+        }
+
+        .victory-message {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            animation: bounceIn 0.6s;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .trophy {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .victory-message h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .victory-stats {
+            background: #f0f4ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .victory-stats p {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .play-again-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .play-again-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Fumetti animati */
+        .speech-bubble {
+            position: fixed;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 20px;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            z-index: 999;
+            animation: bounceIn 0.5s, float 2s ease-in-out infinite;
+            max-width: 250px;
+            pointer-events: none;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid white;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-top: 18px solid #667eea;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes bounceOut {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        .speech-bubble.success {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            border-color: #4ade80;
+        }
+
+        .speech-bubble.success::after {
+            border-top-color: #96e6a1;
+        }
+
+        .speech-bubble.success::before {
+            border-top-color: #4ade80;
+        }
+
+        .speech-bubble.hint {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-color: #f39c12;
+        }
+
+        .speech-bubble.hint::after {
+            border-top-color: #fdcb6e;
+        }
+
+        .speech-bubble.hint::before {
+            border-top-color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🃏 Memory Game - Trebula Mutuesca</h1>
+        <p class="subtitle">Trova le coppie di oggetti romani!</p>
+
+        <div class="info-panel">
+            <p>🏛️ Clicca sulle carte per girarle e trova le coppie uguali! Ricorda dove si trovano gli oggetti romani e completa il gioco nel minor tempo possibile!</p>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>🎯 Difficoltà:</label>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn active" data-level="easy">😊 Facile<br>(8 carte)</button>
+                    <button class="difficulty-btn" data-level="medium">🤔 Medio<br>(12 carte)</button>
+                    <button class="difficulty-btn" data-level="hard">🧠 Difficile<br>(16 carte)</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <button id="startBtn">🎮 Inizia il Gioco!</button>
+            </div>
+        </div>
+
+        <div class="info-bar">
+            <div class="info-card">
+                <div class="info-label">⏱️ Tempo</div>
+                <div class="info-value" id="timer">00:00</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">🔄 Mosse</div>
+                <div class="info-value" id="moves">0</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">✅ Coppie</div>
+                <div class="info-value" id="pairs">0/0</div>
+            </div>
+        </div>
+
+        <div class="game-board">
+            <div class="cards-container" id="cardsContainer"></div>
+        </div>
+    </div>
+
+    <div class="victory-overlay" id="victoryOverlay">
+        <div class="victory-message">
+            <div class="trophy">🏆</div>
+            <h2>Complimenti!</h2>
+            <p style="font-size: 1.2em; color: #666; margin-bottom: 20px;">
+                Hai trovato tutte le coppie romane!
+            </p>
+            <div class="victory-stats">
+                <p><strong>⏱️ Tempo:</strong> <span id="finalTime"></span></p>
+                <p><strong>🔄 Mosse:</strong> <span id="finalMoves"></span></p>
+                <p><strong>🎯 Difficoltà:</strong> <span id="finalDifficulty"></span></p>
+            </div>
+            <button class="play-again-btn" onclick="closeVictory()">🎮 Gioca Ancora!</button>
+        </div>
+    </div>
+
+    <script>
+        // Dati delle carte
+        const cardsData = [
+            {emoji: "🏛️", name: "Colonna"},
+            {emoji: "🏟️", name: "Anfiteatro"},
+            {emoji: "🗿", name: "Statua"},
+            {emoji: "🏺", name: "Vaso"},
+            {emoji: "🛡️", name: "Scudo"},
+            {emoji: "⚔️", name: "Spada"},
+            {emoji: "👑", name: "Corona"},
+            {emoji: "⛩️", name: "Tempio"}
+        ];
+
+        let difficulty = 'easy';
+        let numPairs = 4;
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        let timerInterval;
+        let seconds = 0;
+        let gameStarted = false;
+        let canFlip = true;
+        let lastSpeechBubbleTime = 0;
+
+        // Messaggi fumetti
+        const speechMessages = {
+            start: [
+                "🎮 Clicca una carta per iniziare!",
+                "🃏 Trova le coppie uguali!",
+                "💡 Ricorda dove sono!"
+            ],
+            firstCard: [
+                "👀 Ricorda questa carta!",
+                "🧠 Memorizza!",
+                "✨ Bene, ora trova l'altra!"
+            ],
+            match: [
+                "🎉 Coppia trovata!",
+                "⭐ Perfetto!",
+                "🌟 Bravissimo!",
+                "💫 Fantastico!",
+                "🏆 Ottimo!"
+            ],
+            noMatch: [
+                "🤔 Riprova!",
+                "💭 Quasi!",
+                "🔍 Continua a cercare!"
+            ],
+            almostDone: [
+                "🎯 Ancora poche coppie!",
+                "🚀 Ci sei quasi!",
+                "💪 Forza, manca poco!"
+            ]
+        };
+
+        // Elementi DOM
+        const startBtn = document.getElementById('startBtn');
+        const cardsContainer = document.getElementById('cardsContainer');
+        const timerDisplay = document.getElementById('timer');
+        const movesDisplay = document.getElementById('moves');
+        const pairsDisplay = document.getElementById('pairs');
+        const victoryOverlay = document.getElementById('victoryOverlay');
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+
+        // Event listeners
+        difficultyButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                difficultyButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                difficulty = this.dataset.level;
+                
+                switch(difficulty) {
+                    case 'easy':
+                        numPairs = 4;
+                        cardsContainer.className = 'cards-container easy';
+                        break;
+                    case 'medium':
+                        numPairs = 6;
+                        cardsContainer.className = 'cards-container medium';
+                        break;
+                    case 'hard':
+                        numPairs = 8;
+                        cardsContainer.className = 'cards-container hard';
+                        break;
+                }
+            });
+        });
+
+        startBtn.addEventListener('click', startGame);
+
+        function startGame() {
+            // Reset
+            matchedPairs = 0;
+            moves = 0;
+            seconds = 0;
+            flippedCards = [];
+            canFlip = true;
+            
+            clearInterval(timerInterval);
+            updateTimer();
+            updateMoves();
+            updatePairs();
+            
+            // Crea le carte
+            createCards();
+            
+            // Avvia timer
+            timerInterval = setInterval(() => {
+                seconds++;
+                updateTimer();
+            }, 1000);
+            
+            gameStarted = true;
+            
+            // Fumetto iniziale
+            setTimeout(() => {
+                showSpeechBubble(getRandomMessage('start'), 'normal', 2500);
+            }, 500);
+        }
+
+        function createCards() {
+            // Seleziona le carte per il livello
+            const selectedCards = cardsData.slice(0, numPairs);
+            
+            // Crea coppie
+            cards = [];
+            selectedCards.forEach((cardData, index) => {
+                cards.push({...cardData, id: index * 2});
+                cards.push({...cardData, id: index * 2 + 1});
+            });
+            
+            // Mischia
+            shuffleArray(cards);
+            
+            // Crea elementi DOM
+            cardsContainer.innerHTML = '';
+            cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.dataset.index = index;
+                cardElement.dataset.emoji = card.emoji;
+                
+                cardElement.innerHTML = `
+                    <div class="card-front">?</div>
+                    <div class="card-back">${card.emoji}</div>
+                `;
+                
+                cardElement.addEventListener('click', () => flipCard(cardElement, index));
+                cardsContainer.appendChild(cardElement);
+            });
+            
+            updatePairs();
+        }
+
+        function flipCard(cardElement, index) {
+            if (!canFlip || flippedCards.length >= 2 || cardElement.classList.contains('flipped')) {
+                return;
+            }
+            
+            cardElement.classList.add('flipped');
+            flippedCards.push({element: cardElement, index: index});
+            
+            if (flippedCards.length === 1) {
+                showSpeechBubble(getRandomMessage('firstCard'), 'normal', 1500);
+            }
+            
+            if (flippedCards.length === 2) {
+                canFlip = false;
+                moves++;
+                updateMoves();
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const card1 = flippedCards[0];
+            const card2 = flippedCards[1];
+            
+            const emoji1 = card1.element.dataset.emoji;
+            const emoji2 = card2.element.dataset.emoji;
+            
+            if (emoji1 === emoji2) {
+                // Match!
+                setTimeout(() => {
+                    card1.element.classList.add('matched');
+                    card2.element.classList.add('matched');
+                    matchedPairs++;
+                    updatePairs();
+                    showSpeechBubble(getRandomMessage('match'), 'success', 2000);
+                    
+                    flippedCards = [];
+                    canFlip = true;
+                    
+                    // Quasi finito?
+                    if (matchedPairs === numPairs - 1) {
+                        setTimeout(() => {
+                            showSpeechBubble(getRandomMessage('almostDone'), 'hint', 2500);
+                        }, 2000);
+                    }
+                    
+                    // Vinto?
+                    if (matchedPairs === numPairs) {
+                        setTimeout(gameWon, 500);
+                    }
+                }, 600);
+            } else {
+                // No match
+                setTimeout(() => {
+                    showSpeechBubble(getRandomMessage('noMatch'), 'normal', 1500);
+                }, 600);
+                
+                setTimeout(() => {
+                    card1.element.classList.remove('flipped');
+                    card2.element.classList.remove('flipped');
+                    flippedCards = [];
+                    canFlip = true;
+                }, 1500);
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function updateTimer() {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function updateMoves() {
+            movesDisplay.textContent = moves;
+        }
+
+        function updatePairs() {
+            pairsDisplay.textContent = `${matchedPairs}/${numPairs}`;
+        }
+
+        function gameWon() {
+            clearInterval(timerInterval);
+            
+            document.getElementById('finalTime').textContent = timerDisplay.textContent;
+            document.getElementById('finalMoves').textContent = moves;
+            
+            let difficultyText = '';
+            switch(difficulty) {
+                case 'easy':
+                    difficultyText = '😊 Facile (8 carte)';
+                    break;
+                case 'medium':
+                    difficultyText = '🤔 Medio (12 carte)';
+                    break;
+                case 'hard':
+                    difficultyText = '🧠 Difficile (16 carte)';
+                    break;
+            }
+            document.getElementById('finalDifficulty').textContent = difficultyText;
+            
+            victoryOverlay.classList.add('show');
+        }
+
+        function closeVictory() {
+            victoryOverlay.classList.remove('show');
+        }
+
+        function showSpeechBubble(message, type = 'normal', duration = 2000) {
+            const now = Date.now();
+            if (now - lastSpeechBubbleTime < 500) return;
+            lastSpeechBubbleTime = now;
+
+            const existingBubbles = document.querySelectorAll('.speech-bubble');
+            existingBubbles.forEach(b => b.remove());
+
+            const bubble = document.createElement('div');
+            bubble.className = `speech-bubble ${type}`;
+            bubble.textContent = message;
+
+            const positions = [
+                { top: '20%', left: '15%' },
+                { top: '20%', right: '15%' },
+                { top: '50%', left: '10%' },
+                { top: '50%', right: '10%' }
+            ];
+            const pos = positions[Math.floor(Math.random() * positions.length)];
+            Object.assign(bubble.style, pos);
+
+            document.body.appendChild(bubble);
+
+            setTimeout(() => {
+                bubble.style.animation = 'bounceOut 0.5s';
+                setTimeout(() => bubble.remove(), 500);
+            }, duration);
+        }
+
+        function getRandomMessage(category) {
+            const messages = speechMessages[category];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        // Imposta difficoltà iniziale
+        cardsContainer.className = 'cards-container easy';
+    </script>
+</body>
+</html>
