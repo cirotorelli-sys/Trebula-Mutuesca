@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tombola Romana - Menu Principale</title>
+    <title>Trebula Mutuesca - Giochi Educativi</title>
     <style>
         * {
             margin: 0;
@@ -12,196 +12,759 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
         }
 
         .container {
-            background: #FFF8DC;
-            border-radius: 30px;
-            padding: 50px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            max-width: 600px;
-            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
             text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s;
         }
 
         h1 {
-            color: #8B0000;
-            font-size: 3em;
-            margin-bottom: 15px;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            color: white;
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
         }
 
         .subtitle {
-            color: #654321;
-            font-size: 1.3em;
-            margin-bottom: 50px;
-            font-style: italic;
+            color: #ffd700;
+            font-size: 1.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
         }
 
-        .menu-section {
+        .description {
+            color: white;
+            font-size: 1.1em;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+        }
+
+        .stats-bar {
             background: white;
-            border: 4px solid #D2691E;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 1s;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1em;
+            margin-top: 5px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s;
+        }
+
+        .game-card:nth-child(1) { animation-delay: 0.1s; }
+        .game-card:nth-child(2) { animation-delay: 0.2s; }
+        .game-card:nth-child(3) { animation-delay: 0.3s; }
+        .game-card:nth-child(4) { animation-delay: 0.4s; }
+        .game-card:nth-child(5) { animation-delay: 0.5s; }
+        .game-card:nth-child(6) { animation-delay: 0.6s; }
+        .game-card:nth-child(7) { animation-delay: 0.7s; }
+        .game-card:nth-child(8) { animation-delay: 0.8s; }
+        .game-card:nth-child(9) { animation-delay: 0.9s; }
+        .game-card:nth-child(10) { animation-delay: 1.0s; }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .game-icon {
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .game-title {
+            color: #667eea;
+            font-size: 1.6em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .game-description {
+            color: #666;
+            font-size: 0.95em;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            min-height: 60px;
+        }
+
+        .game-features {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .game-features li {
+            color: #555;
+            font-size: 0.85em;
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .game-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            background: white;
             border-radius: 20px;
             padding: 30px;
-            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: fadeIn 1.2s;
         }
 
-        .menu-section h2 {
-            color: #8B0000;
+        .footer h3 {
+            color: #667eea;
             font-size: 1.8em;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        .menu-section p {
-            color: #654321;
+        .footer p {
+            color: #666;
+            font-size: 1em;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
-        .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
-            color: white;
-            padding: 20px 50px;
-            font-size: 1.3em;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            margin: 10px;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
-        }
-
-        .select-wrapper {
+        .footer-icon {
+            font-size: 3em;
             margin: 20px 0;
         }
 
-        select {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
-            border: 3px solid #D2691E;
-            border-radius: 10px;
-            background: #FFF8DC;
-            color: #654321;
-            font-family: 'Georgia', serif;
-            cursor: pointer;
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .divider {
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #D2691E, transparent);
-            margin: 40px 0;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px;
-            }
+            h1 { font-size: 2.5em; }
+            .subtitle { font-size: 1.2em; }
+            .games-grid { grid-template-columns: 1fr; }
+        }
 
-            h1 {
-                font-size: 2em;
-            }
+        /* Info Button */
+        .info-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            z-index: 9999;
+            font-family: inherit;
+        }
 
-            .subtitle {
-                font-size: 1em;
-            }
+        .info-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
 
-            .btn {
-                padding: 15px 30px;
-                font-size: 1.1em;
-                display: block;
-                width: 100%;
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideDown 0.4s;
+            overflow: hidden;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .close-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(90vh - 100px);
+        }
+
+        .modal-body h2 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .modal-body h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .modal-body p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .modal-body ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .modal-body ul li {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+
+        .modal-body code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #d63384;
+        }
+
+        .modal-body strong {
+            color: #667eea;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+            
+            .info-button {
+                font-size: 0.9em;
+                padding: 10px 18px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🏛️ TOMBOLA ROMANA 🏛️</h1>
-        <div class="subtitle">Sistema Completo con 90 Cartelle</div>
+    <!-- Info Button -->
+    <button class="info-button" onclick="openModal()">ℹ️ Informazioni</button>
 
-        <!-- SEZIONE BANCO -->
-        <div class="menu-section">
-            <h2>🎲 MODALITÀ BANCO</h2>
-            <p>
-                Apri il tabellone principale per gestire il gioco.<br>
-                Registra i giocatori, estrai i simboli e controlla le vittorie.
+    <!-- Modal Popup -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📖 Informazioni sul Progetto</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h2>🏛️ Trebula Mutuesca - Giochi Educativi Interattivi</h2>
+                
+                <p><span class="badge">9 Giochi</span> <span class="badge">Età 3-12 anni</span> <span class="badge">100% Gratuito</span></p>
+                
+                <p>Portale educativo con <strong>9 giochi interattivi</strong> per bambini sulla storia romana dell'antica città di <strong>Trebula Mutuesca</strong>.</p>
+
+                <h2>🎮 Giochi Disponibili</h2>
+                
+                <ul>
+                    <li>🧩 <strong>Puzzle Archeologico</strong> - Ricomponi immagini degli scavi archeologici (5 immagini, 3 difficoltà)</li>
+                    <li>🃏 <strong>Memory Romano</strong> - Trova coppie di oggetti romani (8 coppie, 3 livelli)</li>
+                    <li>🔍 <strong>L'Archeologo di Trebula</strong> - Diventa un archeologo e scava tesori nascosti</li>
+                    <li>🔤 <strong>Crucipuzzle Romano</strong> - Cerca parole nascoste (30 parole, 3 griglie)</li>
+                    <li>🎲 <strong>Gioco dell'Oca Romano</strong> - Viaggio interattivo (1-4 giocatori, quiz, eventi)</li>
+                    <li>📖 <strong>Storia Animata</strong> - Libro interattivo illustrato (9 capitoli, personaggi animati)</li>
+                    <li>🎨 <strong>Libro da Colorare</strong> - Fumetti e disegni da colorare e stampare</li>
+                    <li>❓ <strong>Quiz Romano</strong> - Testa le tue conoscenze (30 domande, 3 difficoltà)</li>
+                    <li>🖌️ <strong>Colora l'Anfiteatro</strong> - Dipingi con pennello digitale (16 colori romani)</li>
+                </ul>
+
+                <h2>✨ Caratteristiche</h2>
+                
+                <ul>
+                    <li>✅ <strong>100% Gratuito</strong> - Nessun costo o abbonamento</li>
+                    <li>✅ <strong>Nessuna Installazione</strong> - Funziona direttamente nel browser</li>
+                    <li>✅ <strong>Offline Ready</strong> - Nessuna connessione internet necessaria</li>
+                    <li>✅ <strong>Responsive Design</strong> - Ottimizzato per mobile, tablet e desktop</li>
+                    <li>✅ <strong>Educativo</strong> - Contenuti storici accurati e verificati</li>
+                    <li>✅ <strong>Senza Pubblicità</strong> - Zero distrazioni per i bambini</li>
+                    <li>✅ <strong>Privacy First</strong> - Nessun tracciamento o raccolta dati</li>
+                </ul>
+
+                <h2>🎯 Obiettivi Educativi</h2>
+                
+                <p>I giochi aiutano i bambini a imparare:</p>
+                <ul>
+                    <li>📚 <strong>Storia dell'Antica Roma</strong> - Eventi, date e personaggi</li>
+                    <li>🏛️ <strong>Architettura Romana</strong> - Edifici, strutture e ingegneria</li>
+                    <li>👥 <strong>Vita Quotidiana</strong> - Come vivevano i romani</li>
+                    <li>🗺️ <strong>Geografia</strong> - Sabina, Lazio e territorio romano</li>
+                    <li>🎭 <strong>Cultura e Tradizioni</strong> - Costumi, spettacoli e società</li>
+                    <li>🏺 <strong>Archeologia</strong> - Scoperte e metodi di scavo</li>
+                </ul>
+
+                <h2>🏛️ Su Trebula Mutuesca</h2>
+                
+                <p><strong>Trebula Mutuesca</strong> era un'antica città romana situata nella regione della <strong>Sabina</strong> (attuale Lazio, Italia centrale), fondata dai Romani nel <strong>290 a.C.</strong> dopo la conquista del territorio sabino.</p>
+
+                <h3>Reperti Archeologici Principali:</h3>
+                <ul>
+                    <li>🏟️ <strong>Anfiteatro</strong> - Capienza circa 5000 spettatori</li>
+                    <li>🛁 <strong>Terme Pubbliche</strong> - Complesso termale con ipocausto</li>
+                    <li>🌉 <strong>Acquedotto</strong> - Sistema idraulico avanzato</li>
+                    <li>🏛️ <strong>Foro</strong> - Centro della vita pubblica</li>
+                    <li>🎨 <strong>Mosaici</strong> - Decorazioni pavimentali splendide</li>
+                    <li>🏺 <strong>Reperti Vari</strong> - Statue, monete, ceramiche</li>
+                </ul>
+
+                <p><strong>Posizione:</strong> Nei pressi dell'attuale Monteleone Sabino (Rieti), accessibile dalla Via Salaria.</p>
+
+                <h2>🎓 Per Educatori</h2>
+                
+                <p>Questi giochi sono perfetti per:</p>
+                <ul>
+                    <li>🏫 <strong>Uso in Classe</strong> - Laboratori di storia</li>
+                    <li>🏠 <strong>Homeschooling</strong> - Apprendimento a casa</li>
+                    <li>📚 <strong>Biblioteche</strong> - Postazioni multimediali</li>
+                    <li>🏛️ <strong>Musei</strong> - Installazioni interattive</li>
+                    <li>👨‍👩‍👧 <strong>Famiglie</strong> - Gioco educativo insieme</li>
+                </ul>
+
+                <h2>🛠️ Tecnologie Utilizzate</h2>
+                
+                <p>Tutto il progetto è realizzato con:</p>
+                <ul>
+                    <li><strong>HTML5</strong> - Struttura delle pagine</li>
+                    <li><strong>CSS3</strong> - Styling e animazioni</li>
+                    <li><strong>JavaScript (Vanilla)</strong> - Logica di gioco</li>
+                    <li><strong>Canvas API</strong> - Grafica per disegno</li>
+                </ul>
+                <p>Nessuna libreria esterna o dipendenza - tutto self-contained!</p>
+
+                <h2>👨‍💻 Autore</h2>
+                
+                <p><strong>Ciro Torelli</strong></p>
+                <p>Progetto creato per scopi educativi e divulgativi sulla storia romana di Trebula Mutuesca.</p>
+
+                <h2>📜 Licenza</h2>
+                
+                <p>Questo progetto è rilasciato sotto <strong>Licenza MIT</strong> - Sei libero di:</p>
+                <ul>
+                    <li>✅ Usare il progetto per scopi personali o commerciali</li>
+                    <li>✅ Modificare e adattare i giochi</li>
+                    <li>✅ Distribuire e condividere</li>
+                    <li>✅ Usare in ambito educativo senza restrizioni</li>
+                </ul>
+
+                <p style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd;">
+                    <strong style="color: #667eea; font-size: 1.2em;">⭐ Buon apprendimento e buon divertimento! 🏛️</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Trebula Mutuesca</h1>
+            <p class="subtitle">Giochi Educativi Interattivi</p>
+            <p class="description">
+                Scopri l'antica città romana di Trebula Mutuesca attraverso 8 giochi educativi 
+                divertenti e interattivi! Impara la storia, l'archeologia e la cultura romana 
+                giocando. Adatto a bambini dai 3 ai 12 anni! 🎮📚
             </p>
-            <a href="banco.html" class="btn">
-                📋 Apri il Banco
-            </a>
         </div>
 
-        <div class="divider"></div>
+        <div class="stats-bar">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Giochi Interattivi</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3-12</div>
+                    <div class="stat-label">Età Consigliata</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Gratuito</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">🏛️</div>
+                    <div class="stat-label">Storia Romana</div>
+                </div>
+            </div>
+        </div>
 
-        <!-- SEZIONE GIOCATORE -->
-        <div class="menu-section">
-            <h2>🎴 MODALITÀ GIOCATORE</h2>
-            <p>
-                Scegli il numero della tua cartella (da 1 a 90).<br>
-                Comunica il numero al banco prima di iniziare!
-            </p>
-            
-            <div class="select-wrapper">
-                <select id="cartellaSelect">
-                    <option value="">-- Seleziona la tua cartella --</option>
-                </select>
+        <div class="games-grid">
+            <!-- Gioco 1: Puzzle -->
+            <div class="game-card" onclick="window.location.href='puzzle_trebula_completo.html'">
+                <div class="game-icon">🧩</div>
+                <div class="game-title">Puzzle Archeologico</div>
+                <div class="game-description">
+                    Ricomponi le immagini degli scavi archeologici di Trebula Mutuesca!
+                </div>
+                <ul class="game-features">
+                    <li>5 immagini archeologiche</li>
+                    <li>3 livelli di difficoltà</li>
+                    <li>Sistema click-to-swap</li>
+                    <li>Info educative su ogni foto</li>
+                </ul>
+                <button class="play-btn">🎮 Gioca Ora!</button>
             </div>
 
-            <button class="btn btn-secondary" onclick="apriCartella()">
-                ✅ Apri la Mia Cartella
-            </button>
+            <!-- Gioco 2: Memory -->
+            <div class="game-card" onclick="window.location.href='memory_trebula.html'">
+                <div class="game-icon">🃏</div>
+                <div class="game-title">Memory Romano</div>
+                <div class="game-description">
+                    Trova le coppie di oggetti romani nascosti nelle carte!
+                </div>
+                <ul class="game-features">
+                    <li>8 coppie di oggetti romani</li>
+                    <li>3 difficoltà (8-12-16 carte)</li>
+                    <li>Timer e contatore mosse</li>
+                    <li>Fumetti animati divertenti</li>
+                </ul>
+                <button class="play-btn">🎮 Gioca Ora!</button>
+            </div>
+
+            <!-- Gioco 3: L'Archeologo di Trebula -->
+            <div class="game-card" onclick="window.location.href='archeologo_trebula.html'">
+                <div class="game-icon">🔍</div>
+                <div class="game-title">L'Archeologo di Trebula</div>
+                <div class="game-description">
+                    Diventa un archeologo e scava per scoprire i tesori nascosti di Trebula Mutuesca!
+                </div>
+                <ul class="game-features">
+                    <li>Scavi archeologici interattivi</li>
+                    <li>Scopri reperti romani autentici</li>
+                    <li>Sistema a tempo e punteggio</li>
+                    <li>Impara tecniche di scavo</li>
+                </ul>
+                <button class="play-btn">🔍 Scava Ora!</button>
+            </div>
+
+            <!-- Gioco 4: Crucipuzzle -->
+            <div class="game-card" onclick="window.location.href='crucipuzzle_romano.html'">
+                <div class="game-icon">🔤</div>
+                <div class="game-title">Crucipuzzle Romano</div>
+                <div class="game-description">
+                    Trova le parole romane nascoste nella griglia di lettere!
+                </div>
+                <ul class="game-features">
+                    <li>8-11 parole per livello</li>
+                    <li>Griglie 12x12, 15x15, 18x18</li>
+                    <li>Parole orizzontali, verticali, diagonali</li>
+                    <li>Indizi per ogni parola</li>
+                </ul>
+                <button class="play-btn">🎮 Gioca Ora!</button>
+            </div>
+
+            <!-- Gioco 5: Gioco dell'Oca -->
+            <div class="game-card" onclick="window.location.href='gioco_oca_romano.html'">
+                <div class="game-icon">🎲</div>
+                <div class="game-title">Gioco dell'Oca Romano</div>
+                <div class="game-description">
+                    Viaggio attraverso Trebula con quiz, tesori e trappole romane!
+                </div>
+                <ul class="game-features">
+                    <li>41 caselle tematiche</li>
+                    <li>1-4 giocatori (umani + CPU)</li>
+                    <li>7 quiz educativi</li>
+                    <li>Nomi personalizzabili</li>
+                </ul>
+                <button class="play-btn">🎮 Gioca Ora!</button>
+            </div>
+
+            <!-- Gioco 7: Storia Animata -->
+            <div class="game-card" onclick="window.location.href='storia_animata_trebula.html'">
+                <div class="game-icon">📖</div>
+                <div class="game-title">Storia Animata</div>
+                <div class="game-description">
+                    Leggi la storia di Trebula Mutuesca in un libro interattivo animato!
+                </div>
+                <ul class="game-features">
+                    <li>9 capitoli narrativi</li>
+                    <li>Personaggi animati parlanti</li>
+                    <li>Hotspot interattivi da esplorare</li>
+                    <li>Storia dalla fondazione a oggi</li>
+                </ul>
+                <button class="play-btn">📚 Leggi Ora!</button>
+            </div>
+
+            <!-- Gioco 6: Libro da Colorare -->
+            <div class="game-card" onclick="window.location.href='trebula-ebook.html'">
+                <div class="game-icon">🎨</div>
+                <div class="game-title">Libro da Colorare</div>
+                <div class="game-description">
+                    Gioco interattivo con fumetti, informazioni e disegni da colorare online e stampare!
+                </div>
+                <ul class="game-features">
+                    <li>Informazioni e curiosità romane</li>
+                    <li>Fumetti illustrati educativi</li>
+                    <li>Disegni da colorare online</li>
+                    <li>Stampa i tuoi disegni colorati</li>
+                </ul>
+                <button class="play-btn">🎨 Colora Ora!</button>
+            </div>
+
+            <!-- Gioco 7: Quiz Romano -->
+            <div class="game-card" onclick="window.location.href='quiz_romano.html'">
+                <div class="game-icon">❓</div>
+                <div class="game-title">Quiz Romano</div>
+                <div class="game-description">
+                    Metti alla prova le tue conoscenze con domande sulla storia romana!
+                </div>
+                <ul class="game-features">
+                    <li>30 domande totali educative</li>
+                    <li>3 livelli di difficoltà</li>
+                    <li>Sistema a punteggio</li>
+                    <li>Spiegazioni dopo ogni risposta</li>
+                </ul>
+                <button class="play-btn">❓ Gioca Ora!</button>
+            </div>
+
+            <!-- Gioco 8: Colora Anfiteatro -->
+            <div class="game-card" onclick="window.location.href='colora_anfiteatro.html'">
+                <div class="game-icon">🖌️</div>
+                <div class="game-title">Colora l'Anfiteatro</div>
+                <div class="game-description">
+                    Dipingi l'anfiteatro romano con pennello e secchiello! Salva e stampa il tuo capolavoro!
+                </div>
+                <ul class="game-features">
+                    <li>Disegno dettagliato dell'anfiteatro</li>
+                    <li>Pennello e secchiello</li>
+                    <li>16 colori romani autentici</li>
+                    <li>Salva e stampa il disegno</li>
+                </ul>
+                <button class="play-btn">🖌️ Colora Ora!</button>
+            </div>
         </div>
 
-        <div style="margin-top: 40px; padding: 20px; background: #F5DEB3; border-radius: 15px; border: 2px solid #D2691E;">
-            <p style="color: #654321; font-size: 0.9em; line-height: 1.6;">
-                <strong>Come giocare:</strong><br>
-                1. Il banco apre la modalità banco<br>
-                2. Ogni giocatore sceglie una cartella (1-90)<br>
-                3. I giocatori comunicano al banco: nome + numero cartella<br>
-                4. Il banco registra tutti e inizia il gioco<br>
-                5. I giocatori segnano manualmente sulla loro cartella mobile
+        <div class="footer">
+            <div class="footer-icon">🏛️</div>
+            <h3>Trebula Mutuesca</h3>
+            <p>
+                <strong>Trebula Mutuesca</strong> era un'antica città romana situata nella regione della Sabina, 
+                nell'attuale Lazio. Fondata nel 290 a.C., fu un importante centro culturale e commerciale 
+                dell'Impero Romano.
+            </p>
+            <p>
+                Oggi il sito archeologico offre testimonianze preziose della vita romana: 
+                anfiteatro, terme, acquedotto, mosaici e molto altro!
+            </p>
+            <p style="margin-top: 20px; color: #999; font-size: 0.9em;">
+                🎮 Tutti i giochi sono gratuiti e progettati per l'educazione dei bambini 📚
+            </p>
+            <p style="margin-top: 15px; color: #667eea; font-size: 1em; font-weight: bold;">
+                👨‍💻 Progetto realizzato da Ciro Torelli
             </p>
         </div>
     </div>
 
     <script>
-        // Popola il menu a tendina con i numeri delle cartelle
-        const select = document.getElementById('cartellaSelect');
-        for (let i = 1; i <= 90; i++) {
-            const option = document.createElement('option');
-            option.value = i;
-            option.textContent = `Cartella ${i}`;
-            select.appendChild(option);
+        function openModal() {
+            document.getElementById('infoModal').classList.add('show');
+            document.body.style.overflow = 'hidden'; // Blocca scroll della pagina
         }
 
-        function apriCartella() {
-            const numeroCartella = document.getElementById('cartellaSelect').value;
-            if (!numeroCartella) {
-                alert('⚠️ Seleziona prima il numero della tua cartella!');
-                return;
-            }
-            window.location.href = `cartella_${numeroCartella}.html`;
+        function closeModal() {
+            document.getElementById('infoModal').classList.remove('show');
+            document.body.style.overflow = 'auto'; // Ripristina scroll
         }
+
+        // Chiudi modal cliccando fuori dal contenuto
+        window.onclick = function(event) {
+            const modal = document.getElementById('infoModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Chiudi modal con tasto ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
