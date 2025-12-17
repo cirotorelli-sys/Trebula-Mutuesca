@@ -24,7 +24,7 @@ Portale educativo con **9 giochi interattivi** per bambini (3-12 anni) sulla sto
 ## 🚀 Come Usare
 
 ### 📱 Online (GitHub Pages)
-Visita il sito live: **[Gioca Ora!](https://cirotorelli.github.io/trebula-mutuesca-giochi/)**
+Visita il sito live: **[Gioca Ora!](https://cirotorelli-sys.github.io/trebula-mutuesca-giochi/)**
 
 ### 💻 Offline (Download)
 1. Scarica il repository (Code → Download ZIP)
