@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Archeologo di Trebula Mutuesca</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255, 248, 220, 0.95);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-height: 98vh;
+            overflow-y: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8B4513;
+            margin-bottom: 5px;
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #A0522D;
+            margin-bottom: 10px;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .info-btn {
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .info-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .game-note {
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .game-note p {
+            color: #8B4513;
+            margin: 0;
+            font-size: 0.8em;
+            line-height: 1.3;
+        }
+
+        .game-note strong {
+            color: #A0522D;
+        }
+
+        .game-settings {
+            margin-top: 30px;
+            padding: 20px;
+            background: #FFF8DC;
+            border-radius: 10px;
+            border: 2px solid #D2691E;
+        }
+
+        .game-settings h3 {
+            color: #8B4513;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .setting-group {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-group label {
+            color: #8B4513;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .setting-group select,
+        .setting-group input[type="number"] {
+            padding: 10px;
+            border: 2px solid #D2691E;
+            border-radius: 5px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .setting-group select:focus,
+        .setting-group input:focus {
+            outline: none;
+            border-color: #8B4513;
+        }
+
+        /* Setup Screen */
+        .setup-screen {
+            text-align: center;
+        }
+
+        .player-setup {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 3px solid #D2691E;
+        }
+
+        .player-setup h2 {
+            color: #8B4513;
+            margin-bottom: 20px;
+        }
+
+        .player-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .player-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .player-input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #D2691E;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .player-input-group input:focus {
+            outline: none;
+            border-color: #8B4513;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Game Screen */
+        .game-screen {
+            display: none;
+        }
+
+        .game-layout {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .board-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-container {
+            min-width: 200px;
+            max-width: 250px;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #D2691E;
+        }
+
+        .current-player {
+            font-size: 1.1em;
+            color: #8B4513;
+            font-weight: bold;
+        }
+
+        .moves-left {
+            font-size: 1em;
+            color: #A0522D;
+            font-weight: bold;
+        }
+
+        .excavation-board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 6px;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(139, 69, 19, 0.2);
+            border-radius: 8px;
+            max-width: 100%;
+        }
+
+        .excavation-cell {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #D2691E, #CD853F);
+            border: 2px solid #8B4513;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            position: relative;
+            box-shadow: inset 0 -3px 10px rgba(0,0,0,0.2);
+        }
+
+        .excavation-cell:hover:not(.excavated) {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .excavation-cell.excavated {
+            background: linear-gradient(135deg, #8B7355, #A0826D);
+            cursor: not-allowed;
+            box-shadow: inset 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        .excavation-cell.found {
+            animation: foundAnimation 0.6s ease-in-out;
+        }
+
+        @keyframes foundAnimation {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.3) rotate(-5deg); }
+            50% { transform: scale(1.3) rotate(5deg); }
+            75% { transform: scale(1.3) rotate(-5deg); }
+            100% { transform: scale(1.1) rotate(0deg); }
+        }
+
+        .excavation-cell.digging {
+            animation: diggingAnimation 0.4s ease-in-out;
+        }
+
+        @keyframes diggingAnimation {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-5px) rotate(-3deg); }
+            50% { transform: translateY(5px) rotate(3deg); }
+            75% { transform: translateY(-3px) rotate(-2deg); }
+        }
+
+        .celebrate {
+            animation: celebrate 1s ease-in-out;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05) rotate(2deg); }
+            50% { transform: scale(1.1) rotate(-2deg); }
+            75% { transform: scale(1.05) rotate(1deg); }
+        }
+
+        .scoreboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .player-score {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #D2691E;
+            text-align: center;
+        }
+
+        .player-score.active {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .player-score h3 {
+            color: #8B4513;
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+
+        .player-score .score {
+            font-size: 1.5em;
+            color: #A0522D;
+            font-weight: bold;
+        }
+
+        .player-score .artifacts {
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            text-align: center;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: #8B4513;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .artifact-icon {
+            font-size: 5em;
+            margin: 20px 0;
+        }
+
+        .artifact-info {
+            text-align: left;
+            background: #FFF8DC;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #D2691E;
+        }
+
+        .artifact-info h3 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .artifact-info p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .points-earned {
+            font-size: 1.5em;
+            color: #FFD700;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .close-modal {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Game Over Screen */
+        .game-over-screen {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .game-over-screen h2 {
+            color: #8B4513;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .final-scores {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 3px solid #D2691E;
+        }
+
+        .winner {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        .final-ranking {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .rank-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #FFF8DC;
+            border-radius: 8px;
+            border-left: 5px solid #D2691E;
+        }
+
+        .rank-item.first {
+            border-left-color: #FFD700;
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+        }
+
+        .rank-item .rank {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #8B4513;
+            min-width: 50px;
+        }
+
+        .rank-item .name {
+            flex: 1;
+            font-size: 1.3em;
+            color: #333;
+        }
+
+        .rank-item .score {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #A0522D;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 10px;
+                max-height: 100vh;
+            }
+
+            h1 {
+                font-size: 1.3em;
+            }
+
+            .subtitle {
+                font-size: 0.75em;
+            }
+
+            .game-layout {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .sidebar-container {
+                max-width: 100%;
+            }
+
+            .scoreboard {
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 5px;
+            }
+
+            .player-score {
+                min-width: 120px;
+                padding: 8px;
+            }
+
+            .excavation-board {
+                gap: 4px;
+                padding: 8px;
+            }
+
+            .excavation-cell {
+                font-size: 1.2em;
+                border-width: 2px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .artifact-icon {
+                font-size: 3em;
+            }
+
+            .game-info {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+                padding: 8px;
+            }
+
+            .player-inputs {
+                max-width: 100%;
+            }
+
+            .game-note p {
+                font-size: 0.7em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.1em;
+            }
+
+            .excavation-cell {
+                font-size: 1em;
+                border-width: 1px;
+            }
+
+            .excavation-board {
+                gap: 3px;
+                padding: 5px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .player-score .score {
+                font-size: 1.3em;
+            }
+        }
+
+        /* Layout orizzontale ottimizzato per desktop */
+        @media (min-width: 1200px) {
+            .game-layout {
+                grid-template-columns: 1fr 280px;
+            }
+
+            .sidebar-container {
+                max-width: 280px;
+            }
+        }
+
+        /* Landscape mode per smartphone */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .container {
+                padding: 5px;
+                max-height: 98vh;
+            }
+
+            h1 {
+                font-size: 1.1em;
+                margin-bottom: 3px;
+            }
+
+            .subtitle, .game-note {
+                display: none;
+            }
+
+            .header-buttons {
+                margin-bottom: 5px;
+            }
+
+            .excavation-board {
+                gap: 2px;
+                padding: 5px;
+            }
+
+            .game-info {
+                padding: 5px;
+                margin-bottom: 5px;
+            }
+
+            .excavation-cell {
+                font-size: 0.9em;
+            }
+        }
+    
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            z-index: 9999;
+            font-family: inherit;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        }
+
+    </style>
+</head>
+<body>
+    <button class="menu-button" onclick="window.location.href='index.html'">🏠 Menu Principale</button>
+
+    <div class="container">
+        <h1>🏛️ L'Archeologo di Trebula Mutuesca 🏛️</h1>
+        <p class="subtitle">Scopri i tesori nascosti dell'antica città romana</p>
+        
+        <div class="header-buttons">
+            <button class="info-btn" onclick="showGameInfo()">ℹ️ Informazioni Gioco</button>
+            <button class="info-btn" onclick="showCredits()">👤 Crediti</button>
+        </div>
+
+        <div class="game-note">
+            <p><strong>📚 Nota Educativa:</strong> Questo gioco è ispirato alla vera storia archeologica di Trebula Mutuesca, 
+            un'importante città romana situata in Sabina. Tutti i reperti presentati sono basati su veri ritrovamenti archeologici 
+            e aiutano a comprendere la vita quotidiana nell'antica Roma.</p>
+        </div>
+
+        <!-- Setup Screen -->
+        <div class="setup-screen" id="setupScreen">
+            <div class="player-setup">
+                <h2>👥 Inserisci i nomi degli archeologi (2-5 giocatori)</h2>
+                <div class="player-inputs">
+                    <div class="player-input-group">
+                        <span>🔍 Giocatore 1:</span>
+                        <input type="text" id="player1" placeholder="Nome archeologo 1" required>
+                    </div>
+                    <div class="player-input-group">
+                        <span>🔍 Giocatore 2:</span>
+                        <input type="text" id="player2" placeholder="Nome archeologo 2" required>
+                    </div>
+                    <div class="player-input-group">
+                        <span>🔍 Giocatore 3:</span>
+                        <input type="text" id="player3" placeholder="Nome archeologo 3 (opzionale)">
+                    </div>
+                    <div class="player-input-group">
+                        <span>🔍 Giocatore 4:</span>
+                        <input type="text" id="player4" placeholder="Nome archeologo 4 (opzionale)">
+                    </div>
+                    <div class="player-input-group">
+                        <span>🔍 Giocatore 5:</span>
+                        <input type="text" id="player5" placeholder="Nome archeologo 5 (opzionale)">
+                    </div>
+                </div>
+
+                <div class="game-settings">
+                    <h3>⚙️ Impostazioni di Gioco</h3>
+                    
+                    <div class="setting-group">
+                        <label>🎯 Livello di Difficoltà:</label>
+                        <select id="difficultyLevel">
+                            <option value="easy">Facile (6×6 - 36 celle)</option>
+                            <option value="medium" selected>Medio (8×8 - 64 celle)</option>
+                            <option value="hard">Difficile (10×10 - 100 celle)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>⛏️ Mosse per Giocatore:</label>
+                        <select id="movesSelect">
+                            <option value="10" selected>10 mosse</option>
+                            <option value="15">15 mosse</option>
+                            <option value="20">20 mosse</option>
+                            <option value="30">30 mosse</option>
+                            <option value="custom">Personalizzato</option>
+                        </select>
+                        <input type="number" id="customMoves" min="5" max="50" placeholder="5-50" style="display:none;">
+                    </div>
+                </div>
+
+                <button class="btn" onclick="startGame()">🏺 Inizia lo Scavo! 🏺</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="game-screen" id="gameScreen">
+            <div class="game-info">
+                <div class="current-player">
+                    🔍 Turno di: <span id="currentPlayerName"></span>
+                </div>
+                <div class="moves-left">
+                    ⛏️ Mosse: <span id="movesLeft"></span>
+                </div>
+            </div>
+
+            <div class="game-layout">
+                <div class="board-container">
+                    <div class="excavation-board" id="excavationBoard"></div>
+                </div>
+                <div class="sidebar-container">
+                    <div class="scoreboard" id="scoreboard"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="game-over-screen" id="gameOverScreen">
+            <h2>🏆 Scavo Completato! 🏆</h2>
+            <div class="winner" id="winnerEmoji">👑</div>
+            <div class="final-scores" id="finalScores"></div>
+            <button class="btn" onclick="location.reload()">🔄 Nuova Spedizione</button>
+        </div>
+    </div>
+
+    <!-- Modal per i reperti -->
+    <div class="modal" id="artifactModal">
+        <div class="modal-content">
+            <div class="artifact-icon" id="artifactIcon"></div>
+            <h2 id="artifactTitle"></h2>
+            <div class="points-earned" id="pointsEarned"></div>
+            <div class="artifact-info" id="artifactInfo"></div>
+            <button class="close-modal" onclick="closeModal()">Continua lo Scavo</button>
+        </div>
+    </div>
+
+    <!-- Modal Informazioni Gioco -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <h2>ℹ️ Informazioni sul Gioco</h2>
+            <div class="artifact-info" style="text-align: left;">
+                <h3>🎯 Obiettivo</h3>
+                <p>Diventa il miglior archeologo scoprendo più reperti romani possibili nel sito di Trebula Mutuesca!</p>
+                
+                <h3>🎮 Come si Gioca</h3>
+                <p><strong>1.</strong> Scegli il numero di giocatori (2-5) e inserisci i loro nomi</p>
+                <p><strong>2.</strong> Seleziona il livello di difficoltà:
+                    <br>• <strong>Facile:</strong> Tabellone 6×6 (36 celle)
+                    <br>• <strong>Medio:</strong> Tabellone 8×8 (64 celle)
+                    <br>• <strong>Difficile:</strong> Tabellone 10×10 (100 celle)
+                </p>
+                <p><strong>3.</strong> Scegli quante mosse ha ogni giocatore per turno (10-50)</p>
+                <p><strong>4.</strong> I giocatori si alternano: uno scava, poi passa al successivo</p>
+                <p><strong>5.</strong> Clicca sulle celle per scavare e cercare reperti!</p>
+                
+                <h3>🏆 Punteggi</h3>
+                <p>• Reperti Comuni: 90-150 punti</p>
+                <p>• Reperti Rari: 160-200 punti</p>
+                <p>• Reperti Molto Rari: 250 punti</p>
+                <p>• Reperti Epici: 300+ punti</p>
+                
+                <h3>📚 Valore Educativo</h3>
+                <p>Ogni reperto scoperto mostra informazioni storiche autentiche sulla vita nell'antica Roma e su Trebula Mutuesca.</p>
+                
+                <h3>📱 Compatibilità</h3>
+                <p>Il gioco funziona perfettamente su PC, tablet e smartphone. Orientamento verticale consigliato per dispositivi mobili.</p>
+            </div>
+            <button class="close-modal" onclick="closeInfoModal()">Chiudi</button>
+        </div>
+    </div>
+
+    <!-- Modal Crediti -->
+    <div class="modal" id="creditsModal">
+        <div class="modal-content">
+            <h2>👤 Crediti</h2>
+            <div class="artifact-info" style="text-align: center;">
+                <div style="font-size: 3em; margin: 20px 0;">🏛️</div>
+                <h3 style="color: #8B4513; font-size: 1.8em; margin: 20px 0;">L'Archeologo di Trebula Mutuesca</h3>
+                
+                <div style="margin: 30px 0; padding: 20px; background: #FFF8DC; border-radius: 10px;">
+                    <p style="font-size: 1.3em; color: #A0522D; margin: 10px 0;"><strong>Ideato e Sviluppato da:</strong></p>
+                    <p style="font-size: 1.5em; color: #8B4513; font-weight: bold; margin: 10px 0;">Ciro Torelli</p>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <p style="color: #666; margin: 10px 0;">🏺 Gioco Educativo Interattivo 🏺</p>
+                    <p style="color: #666; margin: 10px 0;">📚 Basato su Reperti Archeologici Autentici 📚</p>
+                    <p style="color: #666; margin: 10px 0;">🎮 Per Bambini e Famiglie 🎮</p>
+                </div>
+                
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #D2691E;">
+                    <p style="color: #A0522D; font-style: italic;">Dedicato alla valorizzazione del patrimonio archeologico di Trebula Mutuesca</p>
+                    <p style="color: #999; font-size: 0.9em; margin-top: 10px;">© 2024 - Tutti i diritti riservati</p>
+                </div>
+            </div>
+            <button class="close-modal" onclick="closeCreditsModal()">Chiudi</button>
+        </div>
+    </div>
+
+    <script>
+        // Definizione dei reperti con informazioni educative
+        const artifacts = [
+            {
+                name: "Anfora Romana",
+                icon: "🏺",
+                points: 100,
+                info: "L'anfora era il contenitore più comune nell'antica Roma. Veniva usata per trasportare vino, olio d'oliva, garum (salsa di pesce) e altri alimenti. A Trebula Mutuesca, le anfore rinvenute testimoniano i commerci con altre città romane.",
+                rarity: "comune"
+            },
+            {
+                name: "Moneta Imperiale",
+                icon: "🪙",
+                points: 150,
+                info: "Le monete romane erano coniate in bronzo, argento e oro. Riportavano l'effigie dell'imperatore e simboli importanti. Quelle trovate a Trebula Mutuesca risalgono al periodo tra il I e il III secolo d.C.",
+                rarity: "comune"
+            },
+            {
+                name: "Lucerna ad Olio",
+                icon: "🪔",
+                points: 120,
+                info: "Le lucerne erano lampade ad olio usate per illuminare case e templi. Spesso decorate con scene mitologiche o della vita quotidiana, erano prodotte in ceramica e terracotta.",
+                rarity: "comune"
+            },
+            {
+                name: "Fibula Decorata",
+                icon: "📿",
+                points: 180,
+                info: "La fibula era una spilla usata per fermare mantelli e vestiti. Quelle più elaborate in bronzo e argento indicavano lo status sociale elevato del proprietario. Erano veri e propri gioielli funzionali.",
+                rarity: "raro"
+            },
+            {
+                name: "Tegola con Bollo",
+                icon: "🧱",
+                points: 90,
+                info: "Le tegole romane portavano spesso il marchio (bollo) della fornace che le produceva. Queste iscrizioni ci aiutano a capire l'organizzazione economica e produttiva di Trebula Mutuesca.",
+                rarity: "comune"
+            },
+            {
+                name: "Statua Votiva",
+                icon: "🗿",
+                points: 250,
+                info: "Le statue votive erano offerte agli dei nei templi. A Trebula Mutuesca sono state trovate piccole statue in bronzo e terracotta dedicate a divinità come Giove, Minerva e altre divinità locali.",
+                rarity: "molto-raro"
+            },
+            {
+                name: "Strigile",
+                icon: "🏋️",
+                points: 140,
+                info: "Lo strigile era uno strumento in bronzo usato nelle terme per raschiare via olio, sudore e sporco dalla pelle dopo l'esercizio fisico. Testimonia l'importanza delle terme nella vita sociale romana.",
+                rarity: "comune"
+            },
+            {
+                name: "Vaso in Vetro",
+                icon: "🫙",
+                points: 160,
+                info: "I romani erano maestri nella lavorazione del vetro. I vasi in vetro soffiato erano usati per conservare profumi, unguenti e medicinali. Quelli trovati a Trebula mostrano grande abilità artigianale.",
+                rarity: "raro"
+            },
+            {
+                name: "Dadi da Gioco",
+                icon: "🎲",
+                points: 110,
+                info: "I romani amavano i giochi d'azzardo! I dadi in osso o avorio venivano usati in vari giochi da tavolo. Spesso si giocava nelle taverne e durante i banchetti.",
+                rarity: "comune"
+            },
+            {
+                name: "Anello Sigillo",
+                icon: "💍",
+                points: 200,
+                info: "Gli anelli sigillo in bronzo o oro portavano inciso il nome o il simbolo del proprietario. Venivano usati per sigillare documenti e lettere con la cera. Erano simboli di autorità e potere.",
+                rarity: "raro"
+            },
+            {
+                name: "Specchio in Bronzo",
+                icon: "🪞",
+                points: 170,
+                info: "Gli specchi romani erano dischi di bronzo lucidato finemente. Spesso avevano il retro decorato con scene mitologiche. Erano oggetti di lusso usati soprattutto dalle donne per la toeletta.",
+                rarity: "raro"
+            },
+            {
+                name: "Stiletto Scrittorio",
+                icon: "✒️",
+                points: 130,
+                info: "Lo stilo era uno strumento appuntito in bronzo o ferro usato per scrivere su tavolette di cera. L'estremità piatta serviva per cancellare. Era l'equivalente della nostra penna.",
+                rarity: "comune"
+            },
+            {
+                name: "Peso da Telaio",
+                icon: "⚖️",
+                points: 100,
+                info: "I pesi in terracotta o pietra venivano legati ai fili del telaio per tenerli tesi durante la tessitura. La produzione tessile era un'attività importante nell'economia domestica romana.",
+                rarity: "comune"
+            },
+            {
+                name: "Amuleto Portafortuna",
+                icon: "🧿",
+                points: 150,
+                info: "Gli amuleti erano oggetti magici che proteggevano dal malocchio e dalla sfortuna. Potevano avere forma di falcetti lunari, mani, falli o animali. Erano molto diffusi in tutte le classi sociali.",
+                rarity: "comune"
+            },
+            {
+                name: "Elmo da Legionario",
+                icon: "⚔️",
+                points: 300,
+                info: "L'elmo del legionario romano (galea) era in bronzo o ferro, con paraguance e paranuca. A Trebula, data la sua posizione strategica, è possibile che ci fosse una guarnigione militare.",
+                rarity: "epico"
+            },
+            {
+                name: "Coppa in Ceramica",
+                icon: "🍷",
+                points: 140,
+                info: "Le coppe in ceramica sigillata erano usate per bere vino durante i banchetti. Spesso decorate con motivi floreali o scene di caccia, erano prodotte in serie nelle officine specializzate.",
+                rarity: "comune"
+            },
+            {
+                name: "Spillone per Capelli",
+                icon: "💈",
+                points: 160,
+                info: "Gli spilloni in osso, bronzo o argento erano usati dalle donne romane per fissare elaborate acconciature. Alcuni erano decorati con testine di divinità o animali, e rappresentavano veri gioielli.",
+                rarity: "raro"
+            },
+            {
+                name: "Chiave Romana",
+                icon: "🔑",
+                points: 130,
+                info: "Le chiavi romane in bronzo o ferro servivano per aprire serrature di porte e forzieri. Il loro ritrovamento indica l'importanza della sicurezza e della proprietà privata nell'antica società.",
+                rarity: "comune"
+            },
+            {
+                name: "Calamaio",
+                icon: "🖋️",
+                points: 180,
+                info: "Il calamaio in ceramica o bronzo conteneva l'inchiostro per scrivere. Il suo ritrovamento indica la presenza di persone alfabetizzate a Trebula, probabilmente funzionari o commercianti.",
+                rarity: "raro"
+            },
+            {
+                name: "Balsamario",
+                icon: "🧴",
+                points: 170,
+                info: "Piccoli contenitori in vetro o ceramica usati per conservare profumi, unguenti e oli profumati. Erano molto apprezzati dalle donne e dagli uomini romani che curavano molto l'igiene personale.",
+                rarity: "raro"
+            },
+            {
+                name: "Matrice per Pane",
+                icon: "🍞",
+                points: 120,
+                info: "Stampi in terracotta per dare forma al pane. I romani avevano diversi tipi di pane e i fornai professionisti usavano questi stampi per creare forme decorative, soprattutto per occasioni speciali.",
+                rarity: "comune"
+            },
+            {
+                name: "Pugnale Militare",
+                icon: "🗡️",
+                points: 280,
+                info: "Il pugio era il pugnale usato dai legionari romani come arma secondaria. Aveva una lama a doppio taglio e veniva portato sul lato sinistro della cintura. Simbolo del guerriero romano.",
+                rarity: "molto-raro"
+            },
+            {
+                name: "Tavoletta Cerata",
+                icon: "📝",
+                points: 190,
+                info: "Tavolette di legno rivestite di cera su cui si scriveva con lo stilo. Erano riutilizzabili e servivano per prendere appunti, fare conti o scrivere lettere. L'equivalente del nostro blocco notes.",
+                rarity: "raro"
+            },
+            {
+                name: "Mortaio e Pestello",
+                icon: "⚗️",
+                points: 150,
+                info: "Strumenti in pietra o marmo usati per macinare spezie, erbe medicinali e pigmenti per colorare. Indispensabili sia in cucina che nella preparazione di medicinali.",
+                rarity: "comune"
+            },
+            {
+                name: "Gioiello Aureo",
+                icon: "💎",
+                points: 350,
+                info: "Preziosissimi gioielli in oro decorati con pietre preziose, gemme e smalti. Appartenevano alle famiglie più ricche di Trebula Mutuesca e dimostrano l'elevato livello di maestria orafa raggiunto.",
+                rarity: "leggendario"
+            }
+        ];
+
+        // Variabili di gioco
+        let players = [];
+        let currentPlayerIndex = 0;
+        let boardSize = 64; // Default medio
+        let gridCols = 8; // Default medio
+        let movesPerPlayer = 10;
+        let movesLeft = {}; // Oggetto per tracciare le mosse rimanenti per ogni giocatore
+        let board = [];
+        let gameActive = false;
+        let totalMoves = 0;
+        let roundNumber = 1;
+
+        // Sistema Audio
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playDigSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 200;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+
+        function playFoundSound() {
+            const oscillator1 = audioContext.createOscillator();
+            const oscillator2 = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator1.connect(gainNode);
+            oscillator2.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator1.frequency.value = 523.25; // C5
+            oscillator2.frequency.value = 659.25; // E5
+            oscillator1.type = 'sine';
+            oscillator2.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator1.start(audioContext.currentTime);
+            oscillator2.start(audioContext.currentTime);
+            oscillator1.stop(audioContext.currentTime + 0.5);
+            oscillator2.stop(audioContext.currentTime + 0.5);
+            
+            // Secondo accordo
+            setTimeout(() => {
+                const osc3 = audioContext.createOscillator();
+                const osc4 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                
+                osc3.connect(gain2);
+                osc4.connect(gain2);
+                gain2.connect(audioContext.destination);
+                
+                osc3.frequency.value = 783.99; // G5
+                osc4.frequency.value = 1046.50; // C6
+                osc3.type = 'sine';
+                osc4.type = 'sine';
+                
+                gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                
+                osc3.start(audioContext.currentTime);
+                osc4.start(audioContext.currentTime);
+                osc3.stop(audioContext.currentTime + 0.4);
+                osc4.stop(audioContext.currentTime + 0.4);
+            }, 200);
+        }
+
+        function playVictorySound() {
+            const frequencies = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C-E-G-C-E
+            let delay = 0;
+            
+            frequencies.forEach((freq, index) => {
+                setTimeout(() => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = freq;
+                    oscillator.type = 'triangle';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                }, delay);
+                
+                delay += 150;
+            });
+        }
+
+        // Inizializza il gioco
+        function startGame() {
+            // Raccolta nomi giocatori
+            players = [];
+            for (let i = 1; i <= 5; i++) {
+                const input = document.getElementById(`player${i}`);
+                if (input.value.trim() !== '') {
+                    players.push({
+                        name: input.value.trim(),
+                        score: 0,
+                        artifactsFound: 0
+                    });
+                }
+            }
+
+            if (players.length < 2) {
+                alert('Inserisci almeno 2 giocatori per iniziare!');
+                return;
+            }
+
+            // Imposta difficoltà
+            const difficulty = document.getElementById('difficultyLevel').value;
+            switch(difficulty) {
+                case 'easy':
+                    boardSize = 36;
+                    gridCols = 6;
+                    break;
+                case 'medium':
+                    boardSize = 64;
+                    gridCols = 8;
+                    break;
+                case 'hard':
+                    boardSize = 100;
+                    gridCols = 10;
+                    break;
+            }
+
+            // Imposta numero mosse
+            const movesSelect = document.getElementById('movesSelect').value;
+            if (movesSelect === 'custom') {
+                const customValue = parseInt(document.getElementById('customMoves').value);
+                if (customValue >= 5 && customValue <= 50) {
+                    movesPerPlayer = customValue;
+                } else {
+                    alert('Inserisci un numero di mosse tra 5 e 50!');
+                    return;
+                }
+            } else {
+                movesPerPlayer = parseInt(movesSelect);
+            }
+
+            // Inizializza mosse rimanenti per ogni giocatore
+            movesLeft = {};
+            players.forEach((player, index) => {
+                movesLeft[index] = movesPerPlayer;
+            });
+
+            // Nasconde setup, mostra gioco
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            
+            gameActive = true;
+            currentPlayerIndex = 0;
+            totalMoves = 0;
+            roundNumber = 1;
+
+            // Crea il tabellone
+            createBoard();
+            updateUI();
+        }
+
+        // Mostra/nascondi campo mosse personalizzate
+        document.getElementById('movesSelect').addEventListener('change', function() {
+            const customInput = document.getElementById('customMoves');
+            if (this.value === 'custom') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+            }
+        });
+
+        // Crea il tabellone di scavo
+        function createBoard() {
+            const boardElement = document.getElementById('excavationBoard');
+            boardElement.innerHTML = '';
+            boardElement.style.gridTemplateColumns = `repeat(${gridCols}, 1fr)`;
+            board = [];
+
+            // Determina numero di reperti (circa 20-25% delle celle)
+            const numArtifacts = Math.floor(boardSize * 0.22);
+            const artifactPositions = new Set();
+
+            // Posiziona i reperti casualmente
+            while (artifactPositions.size < numArtifacts) {
+                artifactPositions.add(Math.floor(Math.random() * boardSize));
+            }
+
+            // Crea le celle
+            for (let i = 0; i < boardSize; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'excavation-cell';
+                cell.textContent = '⛰️';
+                cell.onclick = () => excavate(i);
+
+                const hasArtifact = artifactPositions.has(i);
+                const artifact = hasArtifact ? artifacts[Math.floor(Math.random() * artifacts.length)] : null;
+
+                board.push({
+                    excavated: false,
+                    hasArtifact: hasArtifact,
+                    artifact: artifact
+                });
+
+                boardElement.appendChild(cell);
+            }
+        }
+
+        // Funzione di scavo
+        function excavate(index) {
+            if (!gameActive || board[index].excavated) return;
+
+            const cell = document.getElementById('excavationBoard').children[index];
+            
+            // Animazione scavo
+            cell.classList.add('digging');
+            playDigSound();
+            
+            setTimeout(() => {
+                board[index].excavated = true;
+                cell.classList.remove('digging');
+                cell.classList.add('excavated');
+                movesLeft[currentPlayerIndex]--; // Decrementa le mosse del giocatore corrente
+                totalMoves++;
+
+                if (board[index].hasArtifact) {
+                    // Reperto trovato!
+                    const artifact = board[index].artifact;
+                    cell.textContent = artifact.icon;
+                    cell.classList.add('found');
+                    
+                    playFoundSound();
+                    
+                    players[currentPlayerIndex].score += artifact.points;
+                    players[currentPlayerIndex].artifactsFound++;
+
+                    // Mostra modal con informazioni
+                    setTimeout(() => showArtifactModal(artifact), 300);
+                } else {
+                    // Nessun reperto
+                    cell.textContent = '🕳️';
+                    
+                    // Passa automaticamente al giocatore successivo dopo una breve pausa
+                    setTimeout(() => {
+                        nextPlayer();
+                    }, 800);
+                }
+            }, 400);
+        }
+
+        // Mostra modal del reperto
+        function showArtifactModal(artifact) {
+            document.getElementById('artifactIcon').textContent = artifact.icon;
+            document.getElementById('artifactTitle').textContent = artifact.name + ' Scoperto!';
+            document.getElementById('pointsEarned').textContent = `+${artifact.points} punti! 🎉`;
+            document.getElementById('artifactInfo').innerHTML = `
+                <h3>📚 Informazioni Storiche:</h3>
+                <p>${artifact.info}</p>
+            `;
+            document.getElementById('artifactModal').style.display = 'flex';
+        }
+
+        // Chiudi modal
+        function closeModal() {
+            document.getElementById('artifactModal').style.display = 'none';
+            
+            // Passa sempre al prossimo giocatore dopo aver chiuso il modal
+            nextPlayer();
+        }
+
+        // Mostra modal informazioni
+        function showGameInfo() {
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+
+        function closeInfoModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        // Mostra modal crediti
+        function showCredits() {
+            document.getElementById('creditsModal').style.display = 'flex';
+        }
+
+        function closeCreditsModal() {
+            document.getElementById('creditsModal').style.display = 'none';
+        }
+
+        // Passa al prossimo giocatore
+        function nextPlayer() {
+            // Passa al giocatore successivo
+            currentPlayerIndex++;
+            
+            if (currentPlayerIndex >= players.length) {
+                // Tutti i giocatori hanno fatto un turno, ricomincia dal primo
+                currentPlayerIndex = 0;
+                
+                // Verifica se tutti i giocatori hanno finito le mosse
+                const allPlayersFinished = Object.values(movesLeft).every(moves => moves <= 0);
+                
+                if (allPlayersFinished) {
+                    // Tutti hanno finito le mosse - Fine gioco
+                    endGame();
+                    return;
+                }
+                
+                // Verifica se ci sono ancora celle da scavare
+                const unexcavatedCells = board.filter(cell => !cell.excavated).length;
+                
+                if (unexcavatedCells === 0) {
+                    // Tutte le celle scavate - Fine gioco
+                    endGame();
+                    return;
+                }
+                
+                // Verifica se ci sono ancora reperti
+                const remainingArtifacts = board.filter(cell => !cell.excavated && cell.hasArtifact).length;
+                
+                if (remainingArtifacts === 0) {
+                    // Tutti i reperti trovati - Fine gioco
+                    endGame();
+                    return;
+                }
+                
+                roundNumber++;
+            }
+            
+            // Salta i giocatori che hanno finito le mosse
+            while (movesLeft[currentPlayerIndex] <= 0 && currentPlayerIndex < players.length) {
+                currentPlayerIndex++;
+                if (currentPlayerIndex >= players.length) {
+                    currentPlayerIndex = 0;
+                    
+                    // Controlla di nuovo se tutti hanno finito
+                    const allPlayersFinished = Object.values(movesLeft).every(moves => moves <= 0);
+                    if (allPlayersFinished) {
+                        endGame();
+                        return;
+                    }
+                }
+            }
+            
+            updateUI();
+        }
+
+        // Aggiorna interfaccia
+        function updateUI() {
+            document.getElementById('currentPlayerName').textContent = players[currentPlayerIndex].name;
+            document.getElementById('movesLeft').textContent = movesLeft[currentPlayerIndex];
+
+            // Aggiorna tabellone punteggi
+            const scoreboard = document.getElementById('scoreboard');
+            scoreboard.innerHTML = '';
+            
+            players.forEach((player, index) => {
+                const scoreCard = document.createElement('div');
+                scoreCard.className = 'player-score' + (index === currentPlayerIndex ? ' active' : '');
+                scoreCard.innerHTML = `
+                    <h3>${player.name}</h3>
+                    <div class="score">${player.score}</div>
+                    <div class="artifacts">🏺 Reperti: ${player.artifactsFound}</div>
+                    <div class="artifacts">⛏️ Mosse: ${movesLeft[index]}</div>
+                `;
+                scoreboard.appendChild(scoreCard);
+            });
+        }
+
+        // Fine gioco
+        function endGame() {
+            gameActive = false;
+            
+            // Suono vittoria
+            playVictorySound();
+            
+            // Ordina giocatori per punteggio
+            const rankings = [...players].sort((a, b) => b.score - a.score);
+            
+            // Calcola statistiche
+            const totalArtifactsFound = players.reduce((sum, p) => sum + p.artifactsFound, 0);
+            const totalPoints = players.reduce((sum, p) => sum + p.score, 0);
+            
+            // Mostra schermata finale
+            setTimeout(() => {
+                document.getElementById('gameScreen').style.display = 'none';
+                document.getElementById('gameOverScreen').style.display = 'block';
+                
+                const finalScores = document.getElementById('finalScores');
+                finalScores.innerHTML = `
+                    <h2>🏆 Classifica Finale 🏆</h2>
+                    <div style="margin: 20px 0; padding: 15px; background: #FFF8DC; border-radius: 10px;">
+                        <p style="color: #8B4513; margin: 5px 0;"><strong>⛏️ Totale Mosse Effettuate:</strong> ${totalMoves}</p>
+                        <p style="color: #8B4513; margin: 5px 0;"><strong>🔄 Round Completati:</strong> ${roundNumber}</p>
+                        <p style="color: #8B4513; margin: 5px 0;"><strong>🏺 Reperti Scoperti:</strong> ${totalArtifactsFound}</p>
+                        <p style="color: #8B4513; margin: 5px 0;"><strong>⭐ Punti Totali:</strong> ${totalPoints}</p>
+                    </div>
+                    <div class="final-ranking"></div>
+                `;
+                
+                const rankingDiv = finalScores.querySelector('.final-ranking');
+                
+                rankings.forEach((player, index) => {
+                    const rankItem = document.createElement('div');
+                    rankItem.className = 'rank-item' + (index === 0 ? ' first celebrate' : '');
+                    
+                    let medal = '';
+                    if (index === 0) medal = '🥇';
+                    else if (index === 1) medal = '🥈';
+                    else if (index === 2) medal = '🥉';
+                    else medal = `#${index + 1}`;
+                    
+                    const avgPoints = player.artifactsFound > 0 ? Math.round(player.score / player.artifactsFound) : 0;
+                    
+                    rankItem.innerHTML = `
+                        <span class="rank">${medal}</span>
+                        <span class="name">${player.name}</span>
+                        <span class="score">${player.score} punti<br><small style="font-size: 0.7em; color: #666;">(${player.artifactsFound} reperti - Media: ${avgPoints} pt/reperto)</small></span>
+                    `;
+                    rankingDiv.appendChild(rankItem);
+                });
+
+                document.getElementById('winnerEmoji').textContent = `${rankings[0].name} è il miglior archeologo! 🏆`;
+            }, 500);
+        }
+
+        // Chiudi modal cliccando fuori
+        document.getElementById('artifactModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.getElementById('infoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeInfoModal();
+            }
+        });
+
+        document.getElementById('creditsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCreditsModal();
+            }
+        });
+    </script>
+</body>
+</html>

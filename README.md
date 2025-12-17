@@ -1,8 +1,8 @@
 # 🏛️ Trebula Mutuesca - Giochi Educativi Interattivi
 
-Portale educativo con **10 giochi interattivi** per bambini (3-12 anni) sulla storia romana dell'antica città di **Trebula Mutuesca**.
+Portale educativo con **9 giochi interattivi** per bambini (3-12 anni) sulla storia romana dell'antica città di **Trebula Mutuesca**.
 
-[![Giochi](https://img.shields.io/badge/Giochi-10-blue)](https://github.com)
+[![Giochi](https://img.shields.io/badge/Giochi-9-blue)](https://github.com)
 [![Età](https://img.shields.io/badge/Età-3--12%20anni-green)](https://github.com)
 [![Licenza](https://img.shields.io/badge/Licenza-MIT-yellow)](LICENSE)
 [![Gratuito](https://img.shields.io/badge/100%25-Gratuito-brightgreen)](https://github.com)
@@ -13,8 +13,7 @@ Portale educativo con **10 giochi interattivi** per bambini (3-12 anni) sulla st
 |-------|-------------|-----------------|
 | 🧩 **Puzzle Archeologico** | Ricomponi immagini degli scavi archeologici | 5 immagini, 3 difficoltà, info educative |
 | 🃏 **Memory Romano** | Trova coppie di oggetti romani | 8 coppie, 3 livelli (8-12-16 carte) |
-| 🏗️ **Costruisci la Città** | Distingui edifici romani da moderni | 10 edifici romani + 6 oggetti moderni |
-| 🗿 **Labirinto Romano** | Esplora le rovine dell'antica città | 3 griglie, monete, trappole, power-up |
+| 🔍 **L'Archeologo di Trebula** | Diventa un archeologo e scava tesori | Scavi interattivi, reperti autentici |
 | 🔤 **Crucipuzzle Romano** | Cerca parole nascoste sulla Roma antica | 30 parole totali, 3 griglie diverse |
 | 🎲 **Gioco dell'Oca** | Viaggio attraverso Trebula Mutuesca | 1-4 giocatori, quiz, eventi speciali |
 | 📖 **Storia Animata** | Libro interattivo illustrato | 9 capitoli, personaggi animati |
@@ -90,14 +89,13 @@ trebula-mutuesca-giochi/
 │
 ├── puzzle_trebula_completo.html        # Gioco 1
 ├── memory_trebula.html                 # Gioco 2
-├── costruisci_citta_romana.html        # Gioco 3
-├── labirinto_romano.html               # Gioco 4
-├── crucipuzzle_romano.html             # Gioco 5
-├── gioco_oca_romano.html               # Gioco 6
-├── storia_animata_trebula.html         # Gioco 7
-├── trebula-ebook.html                  # Gioco 8
-├── quiz_romano.html                    # Gioco 9
-└── colora_anfiteatro.html              # Gioco 10
+├── archeologo_trebula.html             # Gioco 3
+├── crucipuzzle_romano.html             # Gioco 4
+├── gioco_oca_romano.html               # Gioco 5
+├── storia_animata_trebula.html         # Gioco 6
+├── trebula-ebook.html                  # Gioco 7
+├── quiz_romano.html                    # Gioco 8
+└── colora_anfiteatro.html              # Gioco 9
 ```
 
 ## 🎓 Per Educatori
@@ -150,6 +148,8 @@ Sei libero di:
 - ✅ Usare in ambito educativo senza restrizioni
 
 ## 👨‍💻 Autore
+
+**Ciro Torelli**
 
 Progetto creato per scopi **educativi** e divulgativi sulla storia romana di Trebula Mutuesca.
 
