@@ -161,10 +161,6 @@ Progetto creato per scopi **educativi** e divulgativi sulla storia romana di Tre
 
 ## 📞 Contatti
 
-Per domande, suggerimenti o feedback:
-- 🐛 Apri una [Issue](https://github.com/tuo-username/trebula-mutuesca-giochi/issues)
-- 💬 Discussioni nella sezione [Discussions](https://github.com/tuo-username/trebula-mutuesca-giochi/discussions)
-
 ---
 
 ⭐ **Se ti piace questo progetto, lascia una stella su GitHub!** ⭐
